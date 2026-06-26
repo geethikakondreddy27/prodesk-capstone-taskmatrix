@@ -186,7 +186,7 @@ The user interface will be designed using Figma before development begins.
 4. Task Details View
 5. Intelligent Work Dashboard
 
-**Figma Link:** *(To be added after wireframe completion)*
+**Figma Link:** *Will be linked after UI/UX wireframe completion.*
 
 ---
 
@@ -204,7 +204,7 @@ The Entity Relationship Diagram (ERD) will document the relationships between th
 - ActivityLogs
 - Notifications
 
-**ERD Diagram:** *(To be embedded after completion)*
+**ERD Diagram:** * Will be embedded after architecture design completion*
 
 ---
 
