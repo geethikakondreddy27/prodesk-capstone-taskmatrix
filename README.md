@@ -1,5 +1,13 @@
 # FlowStack
 
+# FlowStack
+
+> **Current Status:**  MVP Authentication Phase (Sprint 14)
+>
+> The project is currently under active development. The core authentication system has been completed, including secure user registration, JWT-based authentication, protected routes, and MongoDB integration. The remaining modules described in this document represent the planned implementation roadmap for upcoming sprints.
+
+---
+
 ## Product Requirements Document (PRD)
 
 ### Project Information
@@ -13,6 +21,8 @@
 | Author | Geethika Kondreddy |
 
 ---
+
+
 
 ## Project Overview
 
