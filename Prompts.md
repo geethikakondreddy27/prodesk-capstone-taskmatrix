@@ -70,3 +70,66 @@ Evaluate how the application architecture can support future growth. Consider mo
 
 ---
 
+---
+
+# 9. Authentication Workflow Design
+
+## Prompt
+
+Design a secure authentication workflow for a Full Stack MERN application. Explain how user registration, login, password hashing, JWT generation, protected routes, and logout should work together while keeping the architecture modular and production-ready.
+
+---
+
+# 10. Backend Folder Architecture
+
+## Prompt
+
+Recommend a scalable backend folder structure for a MERN application implementing authentication. Justify the responsibilities of controllers, routes, middleware, models, configuration files, and utility modules to improve maintainability as the project grows.
+
+---
+
+# 11. Authentication API Design
+
+## Prompt
+
+Design RESTful authentication endpoints for a project management application. Define the request and response structure for user registration, login, and protected resources while following standard API design principles.
+
+---
+
+# 12. JWT Authorization Strategy
+
+## Prompt
+
+Compare session-based authentication and JWT-based authentication for modern MERN applications. Evaluate their advantages, limitations, scalability, and suitability for a project management platform before selecting the final authentication strategy.
+
+---
+
+# 13. Frontend Authentication Architecture
+
+## Prompt
+
+Design the authentication flow for a React application using React Router. Explain how registration, login, protected routes, logout, and client-side token persistence should interact to provide a secure user experience.
+
+---
+
+# 14. Deployment Planning
+
+## Prompt
+
+Prepare a deployment strategy for a MERN application using Render for the backend and Vercel for the frontend. Identify configuration steps, API integration requirements, CORS considerations, environment variables, and common deployment issues that should be verified before production release.
+
+---
+
+# 15. Authentication Validation
+
+## Prompt
+
+Recommend frontend validation strategies for an authentication system. Evaluate email validation, password confirmation, password strength indicators, and user feedback mechanisms that improve usability without compromising security.
+
+---
+
+# 16. MVP Scope Evaluation
+
+## Prompt
+
+Review the current implementation against the planned product roadmap. Identify which authentication features are essential for the MVP, which project management modules should be deferred to future sprints, and justify the prioritization based on software engineering best practices.
