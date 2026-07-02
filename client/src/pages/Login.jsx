@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/authService";
 
 function Login() {
@@ -29,39 +29,42 @@ function Login() {
 
       navigate("/dashboard");
     } catch (error) {
-      console.error(error);
-
-      alert("Invalid Credentials");
+      alert(error.response?.data?.message || "Invalid Credentials");
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="page">
+      <div className="card">
+        <h1 className="logo">FlowStack</h1>
+        <p className="subtitle">Agile Project Management Platform</p>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
-        <br /><br />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+          <button type="submit">Login</button>
+        </form>
 
-        <br /><br />
-
-        <button type="submit">
-          Login
-        </button>
-      </form>
+        <p className="footer-text">
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
+      </div>
     </div>
   );
 }

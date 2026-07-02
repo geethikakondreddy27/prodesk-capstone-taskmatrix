@@ -9,12 +9,25 @@ function Dashboard() {
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className="page">
+      <div className="card dashboard-card">
+        <h1 className="logo">FlowStack</h1>
 
-      <button onClick={handleLogout}>
-        Logout
-      </button>
+        <p className="subtitle">
+          Agile Project Management Platform
+        </p>
+
+        <div className="info-box">
+          <p><strong>Status:</strong> Authentication Successful ✅</p>
+          <p><strong>Role:</strong> Member</p>
+          <p><strong>Backend:</strong> Connected</p>
+          <p><strong>JWT:</strong> Active</p>
+        </div>
+
+        <button onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 }

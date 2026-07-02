@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/authService";
 
 function Register() {
@@ -24,16 +24,16 @@ function Register() {
 
     if (name === "password") {
       if (value.length < 6) {
-        setPasswordStrength("Weak");
+        setPasswordStrength("Weak 🔴");
       } else if (
         value.length >= 8 &&
         /[A-Z]/.test(value) &&
         /[0-9]/.test(value) &&
         /[^A-Za-z0-9]/.test(value)
       ) {
-        setPasswordStrength("Strong");
+        setPasswordStrength("Strong 🟢");
       } else {
-        setPasswordStrength("Medium");
+        setPasswordStrength("Medium 🟡");
       }
     }
   };
@@ -44,7 +44,7 @@ function Register() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email address.");
+      alert("Please enter a valid email.");
       return;
     }
 
@@ -54,83 +54,74 @@ function Register() {
     }
 
     try {
-      const data = await registerUser({
+      await registerUser({
         name: formData.name,
         email: formData.email,
         password: formData.password,
       });
 
-      console.log(data);
-
       alert("Registration Successful!");
 
       navigate("/login");
     } catch (error) {
-      console.error(error);
-
       alert(error.response?.data?.message || "Registration Failed");
     }
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className="page">
+      <div className="card">
+        <h1 className="logo">FlowStack</h1>
+        <p className="subtitle">Create your account</p>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
-        <br />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
-        <br />
+          <div className="strength">
+            Password Strength: {passwordStrength}
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
+          <button type="submit">Register</button>
+        </form>
 
-        <small>Password Strength: {passwordStrength}</small>
-
-        <br />
-        <br />
-
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
-
-        <br />
-        <br />
-
-        <button type="submit">Register</button>
-      </form>
+        <p className="footer-text">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+      </div>
     </div>
   );
 }
