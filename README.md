@@ -1,6 +1,6 @@
 # FlowStack
 
-# FlowStack
+
 
 > **Current Status:**  MVP Authentication Phase (Sprint 14)
 >
