@@ -6,6 +6,8 @@
 >
 > The project is currently under active development. The core authentication system has been completed, including secure user registration, JWT-based authentication, protected routes, and MongoDB integration. The remaining modules described in this document represent the planned implementation roadmap for upcoming sprints.
 
+Live-Demo: https://prodesk-capstone-taskmatrix-seven.vercel.app/ 
+
 ---
 
 ## Product Requirements Document (PRD)
