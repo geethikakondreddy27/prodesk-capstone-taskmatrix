@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { registerUser } from "../services/authService";
 
 function Register() {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,16 +20,15 @@ function Register() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
 
     if (name === "password") {
-      if (value.length < 6) {
+      if (value.length < 8) {
         setPasswordStrength("Weak 🔴");
       } else if (
-        value.length >= 8 &&
         /[A-Z]/.test(value) &&
         /[0-9]/.test(value) &&
         /[^A-Za-z0-9]/.test(value)
@@ -41,30 +43,39 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const name = formData.name.trim();
+    const email = formData.email.trim().toLowerCase();
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email.");
-      return;
+    if (!emailRegex.test(email)) {
+      return toast.error("Please enter a valid email address.");
     }
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
+      return toast.error("Passwords do not match.");
     }
 
     try {
+      setLoading(true);
+
       await registerUser({
-        name: formData.name,
-        email: formData.email,
+        name,
+        email,
         password: formData.password,
       });
 
-      alert("Registration Successful!");
+      toast.success("Registration successful!");
 
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
-      alert(error.response?.data?.message || "Registration Failed");
+      toast.error(
+        error.response?.data?.message || "Registration failed."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,6 +83,7 @@ function Register() {
     <div className="page">
       <div className="card">
         <h1 className="logo">FlowStack</h1>
+
         <p className="subtitle">Create your account</p>
 
         <form onSubmit={handleSubmit}>
@@ -115,7 +127,9 @@ function Register() {
             required
           />
 
-          <button type="submit">Register</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
         </form>
 
         <p className="footer-text">
