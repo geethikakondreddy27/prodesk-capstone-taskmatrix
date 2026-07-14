@@ -2,9 +2,11 @@
 
 
 
-> **Current Status:**  MVP Authentication Phase (Sprint 14)
+> **Current Status:** Sprint 15 — Core Task Management & Kanban (In Progress)
 >
-> The project is currently under active development. The core authentication system has been completed, including secure user registration, JWT-based authentication, protected routes, and MongoDB integration. The remaining modules described in this document represent the planned implementation roadmap for upcoming sprints.
+> Authentication (registration, JWT login, protected routes) is complete and in production use. Task management is functional end-to-end: users can create, edit, delete, and move tasks through a drag-and-drop Kanban board (To Do / In Progress / Completed), with optimistic UI updates and toast notifications. Task ownership is enforced on the backend so users can only access their own tasks.
+>
+> FlowStack is currently a single-user task management tool — the Workspace, Project, and team-collaboration layers described below are the focus of the next sprint and are not yet implemented. This README reflects the full product vision; see the Implementation Status columns below for what exists today.
 
 Live-Demo: https://prodesk-capstone-taskmatrix-seven.vercel.app/ 
 
@@ -141,7 +143,7 @@ FlowStack follows a modern three-tier full-stack architecture.
 ### Presentation Layer
 - React.js
 - Vite
-- Tailwind CSS
+- CSS
 
 ### Application Layer
 - Node.js
