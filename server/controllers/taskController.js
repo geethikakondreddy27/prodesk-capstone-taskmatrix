@@ -1,121 +1,108 @@
 import Task from "../models/Task.js";
+import asyncHandler from "../middleware/asyncHandler.js";
 
+// =============================
 // CREATE TASK
-export const createTask = async (req, res) => {
-  try {
-    const { title, description, priority, status, dueDate } = req.body;
+// =============================
+export const createTask = asyncHandler(async (req, res) => {
+  const { title, description, priority, status, dueDate } = req.body;
 
-if (!title || !title.trim()) {
-  return res.status(400).json({
-    message: "Task title is required.",
+  const task = await Task.create({
+    title,
+    description,
+    priority,
+    status,
+    dueDate,
+    authorId: req.user.id,
   });
-}
 
-const task = await Task.create({
-  title: title.trim(),
-  description: description?.trim() || "",
-  priority,
-  status,
-  dueDate,
-  authorId: req.user.id,
+  res.status(201).json(task);
 });
 
-    res.status(201).json(task);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to create task.",
-    });
-  }
-};
-
+// =============================
 // GET ALL TASKS
-export const getTasks = async (req, res) => {
-  try {
-    const tasks = await Task.find({
-      authorId: req.user.id,
-    }).sort({
-      createdAt: -1,
-    });
+// =============================
+export const getTasks = asyncHandler(async (req, res) => {
+  const tasks = await Task.find({
+    authorId: req.user.id,
+  }).sort({
+    createdAt: -1,
+  });
 
-    res.status(200).json(tasks);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to fetch tasks.",
-    });
-  }
-};
+  res.status(200).json(tasks);
+});
 
+// =============================
 // UPDATE TASK
-export const updateTask = async (req, res) => {
-  try {
-    const task = await Task.findById(req.params.id);
+// =============================
+export const updateTask = asyncHandler(async (req, res) => {
+  const task = await Task.findById(req.params.id);
 
-    if (!task) {
-      return res.status(404).json({
-        message: "Task not found.",
-      });
-    }
+  if (!task) {
+    res.status(404);
+    throw new Error("Task not found.");
+  }
 
-    if (task.authorId.toString() !== req.user.id) {
-      return res.status(403).json({
-        message: "Forbidden.",
-      });
-    }
+  if (task.authorId.toString() !== req.user.id) {
+    res.status(403);
+    throw new Error("Forbidden.");
+  }
 
-    // Only allow specific editable fields through.
-    // Prevents clients from reassigning authorId or writing
-    // arbitrary fields via req.body (mass assignment).
-    const { title, description, priority, status, dueDate } = req.body;
+  const {
+    title,
+    description,
+    priority,
+    status,
+    dueDate,
+  } = req.body;
 
-    const updates = {};
-    if (title !== undefined) updates.title = title;
-    if (description !== undefined) updates.description = description;
-    if (priority !== undefined) updates.priority = priority;
-    if (status !== undefined) updates.status = status;
-    if (dueDate !== undefined) updates.dueDate = dueDate;
+  const updates = {};
 
+  if (title !== undefined)
+    updates.title = title;
+
+  if (description !== undefined)
+    updates.description = description;
+
+  if (priority !== undefined)
+    updates.priority = priority;
+
+  if (status !== undefined)
+    updates.status = status;
+
+  if (dueDate !== undefined)
+    updates.dueDate = dueDate;
     const updatedTask = await Task.findByIdAndUpdate(
-      req.params.id,
-      updates,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    req.params.id,
+    updates,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
-    res.status(200).json(updatedTask);
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to update task.",
-    });
-  }
-};
+  res.status(200).json(updatedTask);
+});
 
+// =============================
 // DELETE TASK
-export const deleteTask = async (req, res) => {
-  try {
-    const task = await Task.findById(req.params.id);
+// =============================
+export const deleteTask = asyncHandler(async (req, res) => {
+  const task = await Task.findById(req.params.id);
 
-    if (!task) {
-      return res.status(404).json({
-        message: "Task not found.",
-      });
-    }
-
-    if (task.authorId.toString() !== req.user.id) {
-      return res.status(403).json({
-        message: "Forbidden.",
-      });
-    }
-
-    await task.deleteOne();
-
-    res.status(200).json({
-      message: "Task deleted successfully.",
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Failed to delete task.",
-    });
+  if (!task) {
+    res.status(404);
+    throw new Error("Task not found.");
   }
-};
+
+  if (task.authorId.toString() !== req.user.id) {
+    res.status(403);
+    throw new Error("Forbidden.");
+  }
+
+  await task.deleteOne();
+
+  res.status(200).json({
+    message: "Task deleted successfully.",
+  });
+});

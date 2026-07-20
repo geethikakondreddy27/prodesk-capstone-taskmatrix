@@ -6,6 +6,7 @@ import {
   createTask,
   updateTask,
   deleteTask,
+  generateTaskSuggestions,
 } from "../services/taskService";
 
 const PRIORITIES = ["Low", "Medium", "High", "Critical"];
@@ -52,6 +53,7 @@ function Dashboard() {
   const [editingTask, setEditingTask] = useState(null);
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const [generatingAI, setGeneratingAI] = useState(false);
   const [deletingIds, setDeletingIds] = useState([]);
 
   const [dragOverStatus, setDragOverStatus] = useState(null);
@@ -125,6 +127,44 @@ function Dashboard() {
       [name]: value,
     }));
   };
+
+  const handleGenerateSuggestions = async () => {
+  const title = formData.title.trim();
+
+  if (!title) {
+    toast.error("Please enter a task title first.");
+    return;
+  }
+
+  try {
+    setGeneratingAI(true);
+
+    const data = await generateTaskSuggestions(title);
+
+    if (!data.subtasks?.length) {
+      toast.error("No suggestions received.");
+      return;
+    }
+
+    const generatedDescription = data.subtasks
+      .map((task, index) => `${index + 1}. ${task.title}`)
+      .join("\n");
+
+    setFormData((prev) => ({
+      ...prev,
+      description: generatedDescription,
+    }));
+
+    toast.success("AI suggestions generated!");
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to generate AI suggestions."
+    );
+  } finally {
+    setGeneratingAI(false);
+  }
+};
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -451,16 +491,30 @@ function Dashboard() {
               />
 
               <label className="form-label" htmlFor="description">
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                placeholder="Task description (optional)"
-                value={formData.description}
-                onChange={handleFormChange}
-                rows={3}
-              />
+  Description
+</label>
+
+<div style={{ marginBottom: "10px" }}>
+  <button
+    type="button"
+    className="btn-secondary"
+    onClick={handleGenerateSuggestions}
+    disabled={generatingAI}
+  >
+    {generatingAI
+      ? "Generating..."
+      : "✨ Generate with AI"}
+  </button>
+</div>
+
+<textarea
+  id="description"
+  name="description"
+  placeholder="Task description (optional)"
+  value={formData.description}
+  onChange={handleFormChange}
+  rows={6}
+/>
 
               <div className="form-row">
                 <div className="form-col">

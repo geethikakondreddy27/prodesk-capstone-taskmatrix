@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const TASK_API = "https://flowstack-j9is.onrender.com/api/tasks";
+const AI_API = "https://flowstack-j9is.onrender.com/api/ai";
 
 const getToken = () => {
   return localStorage.getItem("token");
@@ -36,5 +37,19 @@ export const deleteTask = async (id) => {
     `${TASK_API}/${id}`,
     authHeader()
   );
+  return response.data;
+};
+
+// =======================
+// AI Task Suggestions
+// =======================
+
+export const generateTaskSuggestions = async (taskTitle) => {
+  const response = await axios.post(
+    `${AI_API}/suggestions`,
+    { taskTitle },
+    authHeader()
+  );
+
   return response.data;
 };
